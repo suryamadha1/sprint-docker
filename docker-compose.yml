@@ -1,0 +1,32 @@
+version: '1'
+
+services:
+  app:
+    image: "suryamadhavan/sprint2"
+    ports:
+      - "8080:8080"
+    build: ./
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/sprint2
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    volumes:
+      - "app-data:/app"
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=sprint2
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+volumes:
+  app-data:
